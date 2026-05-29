@@ -1,0 +1,12 @@
+.env
+dataset/
+attendance_logs/
+venv/
+setup.sh
+scripts/
+__pycache__
+.dockerignore
+Dockerfile
+README.md
+fly.toml
+embeddings/
