@@ -34,14 +34,12 @@ def process_student_image(
             "success": False,
             "error": result,
         }
-
     # STEP 2
     if not reject_blurry_image(image_path):
         return {
             "success": False,
             "error": "Image is blurry",
         }
-
     # STEP 3
     if not detect_multiple_faces(result):
         return {
@@ -53,7 +51,6 @@ def process_student_image(
     
     os.makedirs("uploads", exist_ok=True)
 
-    # STEP 4
     processed_path = (
         f"uploads/processed_{matric_no}_{index}.jpg"
     )
@@ -64,7 +61,7 @@ def process_student_image(
         processed_path,
     )
 
-    # STEP 5
+    # STEP 4
     remote_path = (
         f"students/{matric_no}/{index}.jpg"
     )
@@ -74,7 +71,7 @@ def process_student_image(
         remote_path,
     )
 
-    # STEP 6
+    # STEP 5
     embedding = generate_embedding(
         image_path
     )
