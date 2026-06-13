@@ -15,34 +15,21 @@ def detect_multiple_faces(faces) -> bool:
     return len(faces) > 1
 
 
-def generate_embedding(image_path: str):
+def generate_embedding_from_faces(faces):
     """
-    Returns:
-        List[float] | None
+    Extracts the pre-computed embedding from the already identified face object.
+    Reduces engine inference counts to exactly one per transaction.
     """
-    image = cv2.imread(image_path)
-    if image is None:
-        return None
-
-    embedding = _engine_get_embedding(image)
-    if embedding is None:
-        return None
-    return embedding.tolist()
-
-
-def validate_face_exists(image_path: str):
-    faces = detect_faces(image_path)
     if not faces:
-        return False, "No face detected"
-    return True, faces
-
-
-def is_blurry(image_path: str, threshold: float = 80.0) -> bool:
-    image = cv2.imread(image_path)
-    if image is None:
-        return True
-
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    variance = cv2.Laplacian(gray, cv2.CV_64F).var()
-    return variance < threshold
-
+        return None
+    
+    # Grab the top face object's normalized math array
+    first_face = faces[0]
+    
+    if hasattr(first_face, 'normed_embedding') and first_face.normed_embedding is not None:
+        return first_face.normed_embedding.tolist()
+        
+    if hasattr(first_face, 'embedding') and first_face.embedding is not None:
+        return first_face.embedding.tolist()
+        
+    return None
